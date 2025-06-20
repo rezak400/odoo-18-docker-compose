@@ -1,134 +1,176 @@
-# Installing Odoo 18.0 with one command (Supports multiple Odoo instances on one server).
 
-## Quick Installation
+# Odoo 18.0 Docker Compose
 
-Install [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/) yourself, then run the following to set up first Odoo instance @ `localhost:10018` (default master password: `minhng.info`):
+**Deploy Odoo 18.0 in seconds — with support for multiple instances on the same server**
 
-``` bash
-curl -s https://raw.githubusercontent.com/minhng92/odoo-18-docker-compose/master/run.sh | bash -s odoo-one 10018 20018
-```
-and/or run the following to set up another Odoo instance @ `localhost:11018` (default master password: `minhng.info`):
+## 🚀 Quick Installation
 
-``` bash
-curl -s https://raw.githubusercontent.com/minhng92/odoo-18-docker-compose/master/run.sh | bash -s odoo-two 11018 21018
+Install [Docker](https://docs.docker.com/get-docker/) dan [Docker Compose](https://docs.docker.com/compose/install/), lalu jalankan perintah ini untuk setup instance pertama di `localhost:10018` (default master password: `minhng.info`):
+
+```bash
+curl -s https://raw.githubusercontent.com/rezak400/odoo-18-docker-compose/master/run.sh | bash -s odoo-one 10018 20018
 ```
 
-Some arguments:
-* First argument (**odoo-one**): Odoo deploy folder
-* Second argument (**10018**): Odoo port
-* Third argument (**20018**): live chat port
+Untuk membuat instance tambahan (misalnya di port `11018`):
 
-If `curl` is not found, install it:
+```bash
+curl -s https://raw.githubusercontent.com/rezak400/odoo-18-docker-compose/master/run.sh | bash -s odoo-two 11018 21018
+```
 
-``` bash
-$ sudo apt-get install curl
-# or
-$ sudo yum install curl
+**Parameter:**
+- `odoo-one` → Nama folder instance Odoo
+- `10018` → Port Odoo
+- `20018` → Port live chat
+
+Jika `curl` belum terpasang:
+
+```bash
+sudo apt install curl
+# atau
+sudo yum install curl
 ```
 
 <p>
 <img src="screenshots/odoo-18-docker-compose.gif" width="100%">
 </p>
 
-## Usage
+---
 
-Start the container:
-``` sh
+## 🧰 Usage
+
+**Menjalankan container:**
+
+```bash
 docker-compose up
 ```
-Then open `localhost:10018` to access Odoo 18.
 
-- **If you get any permission issues**, change the folder permission to make sure that the container is able to access the directory:
+Lalu buka: [http://localhost:10018](http://localhost:10018)
 
-``` sh
-$ sudo chmod -R 777 addons
-$ sudo chmod -R 777 etc
-$ sudo chmod -R 777 postgresql
+---
+
+### 🔧 Permission Issues?
+
+Jalankan perintah ini jika terjadi error permission saat Odoo dijalankan:
+
+```bash
+sudo chmod -R 777 addons
+sudo chmod -R 777 etc
+sudo chmod -R 777 postgresql
 ```
 
-- If you want to start the server with a different port, change **10018** to another value in **docker-compose.yml** inside the parent dir:
+---
 
-```
+### 🔁 Mengganti Port Odoo
+
+Edit file `docker-compose.yml` dan ubah bagian:
+
+```yaml
 ports:
  - "10018:8069"
 ```
 
-- To run Odoo container in detached mode (be able to close terminal without stopping Odoo):
+---
 
-```
+### 📦 Detached Mode
+
+Jalankan container tanpa membuka terminal terus-menerus:
+
+```bash
 docker-compose up -d
 ```
 
-- To Use a restart policy, i.e. configure the restart policy for a container, change the value related to **restart** key in **docker-compose.yml** file to one of the following:
-   - `no` =	Do not automatically restart the container. (the default)
-   - `on-failure[:max-retries]` =	Restart the container if it exits due to an error, which manifests as a non-zero exit code. Optionally, limit the number of times the Docker daemon attempts to restart the container using the :max-retries option.
-  - `always` =	Always restart the container if it stops. If it is manually stopped, it is restarted only when Docker daemon restarts or the container itself is manually restarted. (See the second bullet listed in restart policy details)
-  - `unless-stopped`	= Similar to always, except that when the container is stopped (manually or otherwise), it is not restarted even after Docker daemon restarts.
+---
+
+### 🔄 Restart Policy (Opsional)
+
+Atur di file `docker-compose.yml`:
+
+```yaml
+restart: always
 ```
- restart: always             # run as a service
+
+Opsi lainnya:
+- `no`
+- `on-failure[:max-retries]`
+- `always`
+- `unless-stopped`
+
+---
+
+### 📈 Menambah Limit Watcher File (Opsional)
+
+Untuk mencegah error saat banyak instance Odoo aktif:
+
+```bash
+if grep -qF "fs.inotify.max_user_watches" /etc/sysctl.conf; then echo $(grep -F "fs.inotify.max_user_watches" /etc/sysctl.conf); else echo "fs.inotify.max_user_watches = 524288" | sudo tee -a /etc/sysctl.conf; fi
+sudo sysctl -p
 ```
 
-- To increase maximum number of files watching from 8192 (default) to **524288**. In order to avoid error when we run multiple Odoo instances. This is an *optional step*. These commands are for Ubuntu user:
+---
 
-```
-$ if grep -qF "fs.inotify.max_user_watches" /etc/sysctl.conf; then echo $(grep -F "fs.inotify.max_user_watches" /etc/sysctl.conf); else echo "fs.inotify.max_user_watches = 524288" | sudo tee -a /etc/sysctl.conf; fi
-$ sudo sysctl -p    # apply new config immediately
-``` 
+## 🧩 Custom Addons
 
-## Custom addons
+Letakkan modul kustom kamu ke dalam folder `addons/`.
 
-The **addons/** folder contains custom addons. Just put your custom addons if you have any.
+---
 
-## Odoo configuration & log
+## ⚙️ Konfigurasi & Log Odoo
 
-* To change Odoo configuration, edit file: **etc/odoo.conf**.
-* Log file: **etc/odoo-server.log**
-* Default database password (**admin_passwd**) is `minhng.info`, please change it @ [etc/odoo.conf#L60](/etc/odoo.conf#L60)
+- Edit konfigurasi Odoo: `etc/odoo.conf`
+- Cek log Odoo: `etc/odoo-server.log`
+- Ubah master password di bagian ini:
 
-## Odoo container management
+  ```ini
+  [options]
+  admin_passwd = minhng.info
+  ```
 
-**Run Odoo**:
+---
 
-``` bash
+## 🐳 Docker Commands
+
+**Menjalankan Odoo:**
+
+```bash
 docker-compose up -d
 ```
 
-**Restart Odoo**:
+**Restart Odoo:**
 
-``` bash
+```bash
 docker-compose restart
 ```
 
-**Stop Odoo**:
+**Stop Odoo:**
 
-``` bash
+```bash
 docker-compose down
 ```
 
-## Live chat
+---
 
-In [docker-compose.yml#L21](docker-compose.yml#L21), we exposed port **20018** for live-chat on host.
+## 💬 Live Chat Support
 
-Configuring **nginx** to activate live chat feature (in production):
+Port `20018` disediakan khusus untuk fitur live chat (long polling).
 
-``` conf
-#...
-server {
-    #...
-    location /longpolling/ {
-        proxy_pass http://0.0.0.0:20018/longpolling/;
-    }
-    #...
+Jika menggunakan Nginx di production, tambahkan di konfigurasi:
+
+```nginx
+location /longpolling/ {
+    proxy_pass http://0.0.0.0:20018/longpolling/;
 }
-#...
 ```
 
-## docker-compose.yml
+---
 
-* odoo:18
-* postgres:17
+## 📦 docker-compose.yml Summary
 
-## Odoo 18.0 screenshots after successful installation.
+- **Odoo**: versi 18
+- **PostgreSQL**: versi 17
+
+---
+
+## 📸 Screenshots
 
 <p align="center">
 <img src="screenshots/odoo-18-welcome-screenshot.png" width="50%">
@@ -145,3 +187,10 @@ server {
 <p>
 <img src="screenshots/odoo-18-product-form.png" width="100%">
 </p>
+
+---
+
+## 🧑‍💻 Author
+
+Forked & maintained by [rezak400](https://github.com/rezak400)  
+Based on original work by [minhng92](https://github.com/minhng92)
