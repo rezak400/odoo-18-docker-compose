@@ -1,7 +1,7 @@
 
-# Odoo 18.0 Docker Compose
+# Odoo 16.0 Docker Compose
 
-**Deploy Odoo 18.0 in seconds — with support for multiple instances on the same server**
+**Deploy Odoo 16.0 in seconds — with support for multiple instances on the same server**
 
 ## 🚀 Quick Installation
 
@@ -11,22 +11,22 @@ sudo apt update && sudo apt install -y ca-certificates curl gnupg lsb-release &&
 ```
 
 
-lalu jalankan perintah ini untuk setup instance pertama di `localhost:18001` (default master password: `rezahandsome123`):
+lalu jalankan perintah ini untuk setup instance pertama di `localhost:16001` (default master password: `rezahandsome123`):
 
 ```bash
-curl -s https://raw.githubusercontent.com/rezak400/odoo-18-docker-compose/master/run.sh | bash -s odoo-one 18001 28001
+curl -s https://raw.githubusercontent.com/rezak400/odoo-docker-compose/master/run.sh | bash -s odoo-one 16001 26001
 ```
 
 Untuk membuat instance tambahan (misalnya di port `11018`):
 
 ```bash
-curl -s https://raw.githubusercontent.com/rezak400/odoo-18-docker-compose/master/run.sh | bash -s odoo-two 18002 28002
+curl -s https://raw.githubusercontent.com/rezak400/odoo-docker-compose/master/run.sh | bash -s odoo-two 18002 28002
 ```
 
 **Parameter:**
 - `odoo-one` → Nama folder instance Odoo
-- `18001` → Port Odoo
-- `28001` → Port live chat
+- `16001` → Port Odoo
+- `26001` → Port live chat
 
 Jika `curl` belum terpasang:
 
@@ -50,7 +50,7 @@ sudo yum install curl
 docker-compose up
 ```
 
-Lalu buka: [http://localhost:18001](http://localhost:18001)
+Lalu buka: [http://localhost:16001](http://localhost:16001)
 
 ---
 
@@ -72,7 +72,7 @@ Edit file `docker-compose.yml` dan ubah bagian:
 
 ```yaml
 ports:
- - "18001:8069"
+ - "16001:8069"
 ```
 
 ---
@@ -157,13 +157,13 @@ docker-compose down
 
 ## 💬 Live Chat Support
 
-Port `28001` disediakan khusus untuk fitur live chat (long polling).
+Port `26001` disediakan khusus untuk fitur live chat (long polling).
 
 Jika menggunakan Nginx di production, tambahkan di konfigurasi:
 
 ```nginx
 location /longpolling/ {
-    proxy_pass http://0.0.0.0:28001/longpolling/;
+    proxy_pass http://0.0.0.0:26001/longpolling/;
 }
 ```
 
