@@ -5,22 +5,28 @@
 
 ## 🚀 Quick Installation
 
-Install [Docker](https://docs.docker.com/get-docker/) dan [Docker Compose](https://docs.docker.com/compose/install/), lalu jalankan perintah ini untuk setup instance pertama di `localhost:10018` (default master password: `minhng.info`):
+Install [Docker](https://docs.docker.com/get-docker/) dan [Docker Compose](https://docs.docker.com/compose/install/), ini onelinernya
+```
+sudo apt update && sudo apt install -y ca-certificates curl gnupg lsb-release && curl -fsSL https://get.docker.com | sh
+```
+
+
+lalu jalankan perintah ini untuk setup instance pertama di `localhost:18001` (default master password: `minhng.info`):
 
 ```bash
-curl -s https://raw.githubusercontent.com/rezak400/odoo-18-docker-compose/master/run.sh | bash -s odoo-one 10018 20018
+curl -s https://raw.githubusercontent.com/rezak400/odoo-18-docker-compose/master/run.sh | bash -s odoo-one 18001 28001
 ```
 
 Untuk membuat instance tambahan (misalnya di port `11018`):
 
 ```bash
-curl -s https://raw.githubusercontent.com/rezak400/odoo-18-docker-compose/master/run.sh | bash -s odoo-two 11018 21018
+curl -s https://raw.githubusercontent.com/rezak400/odoo-18-docker-compose/master/run.sh | bash -s odoo-two 18002 28002
 ```
 
 **Parameter:**
 - `odoo-one` → Nama folder instance Odoo
-- `10018` → Port Odoo
-- `20018` → Port live chat
+- `18001` → Port Odoo
+- `28001` → Port live chat
 
 Jika `curl` belum terpasang:
 
@@ -44,7 +50,7 @@ sudo yum install curl
 docker-compose up
 ```
 
-Lalu buka: [http://localhost:10018](http://localhost:10018)
+Lalu buka: [http://localhost:18001](http://localhost:18001)
 
 ---
 
@@ -66,7 +72,7 @@ Edit file `docker-compose.yml` dan ubah bagian:
 
 ```yaml
 ports:
- - "10018:8069"
+ - "18001:8069"
 ```
 
 ---
@@ -151,13 +157,13 @@ docker-compose down
 
 ## 💬 Live Chat Support
 
-Port `20018` disediakan khusus untuk fitur live chat (long polling).
+Port `28001` disediakan khusus untuk fitur live chat (long polling).
 
 Jika menggunakan Nginx di production, tambahkan di konfigurasi:
 
 ```nginx
 location /longpolling/ {
-    proxy_pass http://0.0.0.0:20018/longpolling/;
+    proxy_pass http://0.0.0.0:28001/longpolling/;
 }
 ```
 
