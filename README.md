@@ -5,13 +5,13 @@
 
 ## 🚀 Quick Installation
 
-Install [Docker](https://docs.docker.com/get-docker/) dan [Docker Compose](https://docs.docker.com/compose/install/), ini onelinernya
+Install [Docker](https://docs.docker.com/get-docker/) dan [Docker Compose](https://docs.docker.com/compose/install/), ini onelinernya:
 ```
 sudo apt update && sudo apt install -y ca-certificates curl gnupg lsb-release && curl -fsSL https://get.docker.com | sh
 ```
 
 
-lalu jalankan perintah ini untuk setup instance pertama di `localhost:18001` (default master password: `minhng.info`):
+lalu jalankan perintah ini untuk setup instance pertama di `localhost:18001` (default master password: `rezahandsome123`):
 
 ```bash
 curl -s https://raw.githubusercontent.com/rezak400/odoo-18-docker-compose/master/run.sh | bash -s odoo-one 18001 28001
