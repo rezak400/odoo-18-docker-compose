@@ -36,7 +36,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 else
   # Linux sed syntax
   sed -i 's/10017/'$PORT'/g' $DESTINATION/docker-compose.yml
-  sed -i '' 's/20017/'$CHAT'/g' $DESTINATION/docker-compose.yml
+  sed -i 's/20017/'$CHAT'/g' $DESTINATION/docker-compose.yml
 fi
 
 # Set file and directory permissions after installation
