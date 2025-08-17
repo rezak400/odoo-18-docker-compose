@@ -14,13 +14,13 @@ sudo apt update && sudo apt install -y ca-certificates curl gnupg lsb-release &&
 lalu jalankan perintah ini untuk setup instance pertama di `localhost:16001` (default master password: `rezahandsome123`):
 
 ```bash
-curl -s https://raw.githubusercontent.com/rezak400/odoo-docker-compose/master/run.sh | bash -s odoo-one 16001 26001
+curl -s https://raw.githubusercontent.com/rezak400/odoo-docker-compose/refs/heads/16.0/run.sh | bash -s odoo-one 16001 26001
 ```
 
 Untuk membuat instance tambahan (misalnya di port `11018`):
 
 ```bash
-curl -s https://raw.githubusercontent.com/rezak400/odoo-docker-compose/master/run.sh | bash -s odoo-two 18002 28002
+curl -s https://raw.githubusercontent.com/rezak400/odoo-docker-compose/refs/heads/16.0/run.sh | bash -s odoo-two 16002 26002
 ```
 
 **Parameter:**
