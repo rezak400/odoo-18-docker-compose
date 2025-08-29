@@ -5,34 +5,34 @@
 
 ## 🚀 Quick Installation
 
-Install [Docker](https://docs.docker.com/get-docker/) dan [Docker Compose](https://docs.docker.com/compose/install/), ini onelinernya:
+Install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/), here's the oneliner:
 ```
 sudo apt update && sudo apt install -y ca-certificates curl gnupg lsb-release && curl -fsSL https://get.docker.com | sh
 ```
 
 
-lalu jalankan perintah ini untuk setup instance pertama di `localhost:18001` (default master password: `rezahandsome123`):
+then run this command to setup the first instance at `localhost:18001` (default master password: `rezahandsome123`):
 
 ```bash
 curl -s https://raw.githubusercontent.com/rezak400/odoo-docker-compose/master/run.sh | bash -s odoo-one 18001 28001
 ```
 
-Untuk membuat instance tambahan (misalnya di port `11018`):
+To create additional instances (for example at port `11018`):
 
 ```bash
 curl -s https://raw.githubusercontent.com/rezak400/odoo-docker-compose/master/run.sh | bash -s odoo-two 18002 28002
 ```
 
-**Parameter:**
-- `odoo-one` → Nama folder instance Odoo
-- `18001` → Port Odoo
-- `28001` → Port live chat
+**Parameters:**
+- `odoo-one` → Odoo instance folder name
+- `18001` → Odoo port
+- `28001` → Live chat port
 
-Jika `curl` belum terpasang:
+If `curl` is not installed:
 
 ```bash
 sudo apt install curl
-# atau
+# or
 sudo yum install curl
 ```
 
@@ -44,19 +44,19 @@ sudo yum install curl
 
 ## 🧰 Usage
 
-**Menjalankan container:**
+**Running the container:**
 
 ```bash
 docker-compose up
 ```
 
-Lalu buka: [http://localhost:18001](http://localhost:18001)
+Then open: [http://localhost:18001](http://localhost:18001)
 
 ---
 
 ### 🔧 Permission Issues?
 
-Jalankan perintah ini jika terjadi error permission saat Odoo dijalankan:
+Run this command if you get permission errors when running Odoo:
 
 ```bash
 sudo chmod -R 777 addons
@@ -66,20 +66,20 @@ sudo chmod -R 777 postgresql
 
 ---
 
-### 🔁 Mengganti Port Odoo
+### 🔁 Changing Odoo Port
 
-Edit file `docker-compose.yml` dan ubah bagian:
+Edit the `docker-compose.yml` file and change this part:
 
 ```yaml
 ports:
- - "18001:8069"
+ - "10018:8069"
 ```
 
 ---
 
 ### 📦 Detached Mode
 
-Jalankan container tanpa membuka terminal terus-menerus:
+Run the container without keeping the terminal open continuously:
 
 ```bash
 docker-compose up -d
@@ -87,15 +87,15 @@ docker-compose up -d
 
 ---
 
-### 🔄 Restart Policy (Opsional)
+### 🔄 Restart Policy (Optional)
 
-Atur di file `docker-compose.yml`:
+Set in the `docker-compose.yml` file:
 
 ```yaml
 restart: always
 ```
 
-Opsi lainnya:
+Other options:
 - `no`
 - `on-failure[:max-retries]`
 - `always`
@@ -103,9 +103,9 @@ Opsi lainnya:
 
 ---
 
-### 📈 Menambah Limit Watcher File (Opsional)
+### 📈 Adding File Watcher Limit (Optional)
 
-Untuk mencegah error saat banyak instance Odoo aktif:
+To prevent errors when many Odoo instances are active:
 
 ```bash
 if grep -qF "fs.inotify.max_user_watches" /etc/sysctl.conf; then echo $(grep -F "fs.inotify.max_user_watches" /etc/sysctl.conf); else echo "fs.inotify.max_user_watches = 524288" | sudo tee -a /etc/sysctl.conf; fi
@@ -116,15 +116,25 @@ sudo sysctl -p
 
 ## 🧩 Custom Addons
 
-Letakkan modul kustom kamu ke dalam folder `addons/`.
+Place your custom modules in the `custom_addons/` folder.
+
+The custom addons are mounted to the container at `/mnt/extra-addons` and will be automatically loaded by Odoo.
 
 ---
 
-## ⚙️ Konfigurasi & Log Odoo
+## 🏢 Enterprise Addons
 
-- Edit konfigurasi Odoo: `etc/odoo.conf`
-- Cek log Odoo: `etc/odoo-server.log`
-- Ubah master password di bagian ini:
+Place your enterprise modules in the `enterprise_addons/` folder.
+
+The enterprise addons are mounted to the container at `/mnt/enterprise-addons` and will be automatically loaded by Odoo.
+
+---
+
+## ⚙️ Odoo Configuration & Logs
+
+- Edit Odoo configuration: `etc/odoo.conf`
+- Check Odoo logs: `etc/odoo-server.log`
+- Change master password in this section:
 
   ```ini
   [options]
@@ -135,7 +145,7 @@ Letakkan modul kustom kamu ke dalam folder `addons/`.
 
 ## 🐳 Docker Commands
 
-**Menjalankan Odoo:**
+**Running Odoo:**
 
 ```bash
 docker-compose up -d
@@ -157,9 +167,9 @@ docker-compose down
 
 ## 💬 Live Chat Support
 
-Port `28001` disediakan khusus untuk fitur live chat (long polling).
+Port `28001` is specifically provided for live chat features (long polling).
 
-Jika menggunakan Nginx di production, tambahkan di konfigurasi:
+If using Nginx in production, add this to the configuration:
 
 ```nginx
 location /longpolling/ {
@@ -171,8 +181,8 @@ location /longpolling/ {
 
 ## 📦 docker-compose.yml Summary
 
-- **Odoo**: versi 18
-- **PostgreSQL**: versi 17
+- **Odoo**: version 18
+- **PostgreSQL**: version 17
 
 ---
 
